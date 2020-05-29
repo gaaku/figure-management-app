@@ -16,10 +16,6 @@
           <input class="form-control" v-model="training" />
         </div>
 
-        <!-- <label>体重：</label>
-        <div class="form-group">
-          <input class="form-control" v-model="weight" />
-        </div> -->
         <label>体重：</label>
         <div class="form-group">
           <select class="form-control" v-model="weight">
@@ -40,7 +36,7 @@
         </div>
 
         <div class="button">
-          <Button title="追加" :onClick="post" />
+          <Button title="追加" :onClick="post" :clickable="canPost" />
         </div>
       </div>
     </div>
@@ -49,6 +45,7 @@
 
 <script>
 import Button from "../components/Button";
+import ListModel from "../models/List";
 export default {
   components: {
     Button,
@@ -62,30 +59,28 @@ export default {
   data() {
     return {
       meal: "",
-      weight: "",
       training: "",
+      weight: "",
+      canPost: true,
     };
   },
   methods: {
-    post() {
-      if (!this.meal || !this.weight || !this.training) {
-        alert("何か入力してください");
-        return;
+    async post() {
+      try {
+        this.canPost = false;
+        const list = await ListModel.save({
+          meal: this.meal,
+          training: this.training,
+          weight: this.weight,
+        });
+        this.onPost(list);
+        this.meal = "";
+        this.training = "";
+        this.weight = "";
+      } catch (error) {
+        alert(error.list);
       }
-
-      const newMessage = this.createMessage();
-      this.onPost(newMessage);
-      this.meal = "";
-      this.training = "";
-      this.weight = "";
-    },
-    createMessage() {
-      return {
-        date: new Date().toLocaleString(),
-        meal: this.meal,
-        weight: this.weight,
-        training: this.training,
-      };
+      this.canPost = true;
     },
   },
 };

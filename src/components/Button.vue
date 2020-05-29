@@ -1,7 +1,7 @@
 <template>
-  <div class="button" @click="onClick">
+  <button class="button" @click="onClick" :disabled="!clickable">
     {{ title }}
-  </div>
+  </button>
 </template>
 
 <script>
@@ -14,6 +14,10 @@ export default {
     onClick: {
       type: Function,
       required: true,
+    },
+    clickable: {
+      type: Boolean,
+      default: true,
     },
   },
 };
