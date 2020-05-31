@@ -1,5 +1,4 @@
 module.exports = {
+  publicPath: "/",
   outputDir: "docs",
-  assetsDir: "./",
-  publicPath: "./figure-management-app/",
 };
