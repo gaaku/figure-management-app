@@ -1,5 +1,6 @@
 import Vue from "vue";
 import Vuex from "vuex";
+import { state as Liststate } from "./modules/messages/index";
 
 Vue.use(Vuex);
 
@@ -7,8 +8,10 @@ const state = {
   Greeting: "hello",
 };
 export default new Vuex.Store({
-  state,
-  mutations,
-  getters,
-  actions,
+  modules: {
+    messages: {
+      namespaced: true,
+      state: Liststate,
+    },
+  },
 });
